@@ -1,35 +1,11 @@
-# =========================
-# GENERAL
-# =========================
-
-.env
-*.zip
-*.pyc
-*.pyd
-
-__pycache__/
+# Ignore data and environment files
 data/
 db/
+__pycache__/
+*.zip
+.env
 
-# =========================
-# ROOT PROJECT CACHE
-# =========================
-
-.vscode/
-.ipynb_checkpoints/
-
-# =========================
-# LAMBDA PROJECT CACHE
-# =========================
-
-LAMBDA_PROJECT/__pycache__/
-LAMBDA_PROJECT/bin/
-LAMBDA_PROJECT/include/
-
-# =========================
-# AWS / PYTHON LIBRARIES
-# =========================
-
+# Ignore Lambda dependency packages
 LAMBDA_PROJECT/boto3/
 LAMBDA_PROJECT/botocore/
 LAMBDA_PROJECT/certifi/
@@ -50,44 +26,21 @@ LAMBDA_PROJECT/tqdm/
 LAMBDA_PROJECT/urllib3/
 LAMBDA_PROJECT/asn1crypto/
 
-# =========================
-# DIST-INFO FOLDERS
-# =========================
-
+# Ignore dist-info folders
 LAMBDA_PROJECT/*.dist-info/
-LAMBDA_PROJECT/*-info/
 
-LAMBDA_PROJECT/asn1crypto-*/
-LAMBDA_PROJECT/boto3-*/
-LAMBDA_PROJECT/botocore-*/
-LAMBDA_PROJECT/certifi-*/
-LAMBDA_PROJECT/charset_normalizer-*/
-LAMBDA_PROJECT/click-*/
-LAMBDA_PROJECT/colorama-*/
-LAMBDA_PROJECT/greenlet-*/
-LAMBDA_PROJECT/idna-*/
-LAMBDA_PROJECT/jmespath-*/
-LAMBDA_PROJECT/joblib-*/
-LAMBDA_PROJECT/pg8000-*/
-LAMBDA_PROJECT/python_dateutil-*/
-LAMBDA_PROJECT/requests-*/
-LAMBDA_PROJECT/s3transfer-*/
-LAMBDA_PROJECT/scramp-*/
-LAMBDA_PROJECT/six-*/
-LAMBDA_PROJECT/sqlalchemy-*/
-LAMBDA_PROJECT/tqdm-*/
-LAMBDA_PROJECT/typing_extensions-*/
-LAMBDA_PROJECT/urllib3-*/
+# Ignore build folders
+LAMBDA_PROJECT/bin/
+LAMBDA_PROJECT/include/
 
-# =========================
-# EXTRA PYTHON FILES
-# =========================
+# Ignore cache and binary files
+LAMBDA_PROJECT/__pycache__/
+LAMBDA_PROJECT/*.pyc
+LAMBDA_PROJECT/*.pyd
 
+# Ignore standalone dependency files
 LAMBDA_PROJECT/six.py
 LAMBDA_PROJECT/typing_extensions.py
 
-# =========================
-# ZIP FILES
-# =========================git add .gitignore
-
+# Ignore Lambda zip
 LAMBDA_PROJECT/lambda.zip
