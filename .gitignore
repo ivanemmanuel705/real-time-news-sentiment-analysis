@@ -4,8 +4,6 @@ __pycache__/
 *.zip
 .env
 
-
-
 LAMBDA_PROJECT/boto3/
 LAMBDA_PROJECT/botocore/
 LAMBDA_PROJECT/sqlalchemy/
@@ -20,3 +18,20 @@ LAMBDA_PROJECT/idna/
 LAMBDA_PROJECT/requests/
 LAMBDA_PROJECT/tqdm/
 LAMBDA_PROJECT/__pycache__/
+
+LAMBDA_PROJECT/*.dist-info/
+LAMBDA_PROJECT/bin/
+LAMBDA_PROJECT/include/
+
+LAMBDA_PROJECT/asn1crypto/
+LAMBDA_PROJECT/charset_normalizer/
+LAMBDA_PROJECT/colorama/
+LAMBDA_PROJECT/joblib/
+LAMBDA_PROJECT/pg8000/
+LAMBDA_PROJECT/scramp/
+
+LAMBDA_PROJECT/*.pyd
+LAMBDA_PROJECT/*.pyc
+
+LAMBDA_PROJECT/six.py
+LAMBDA_PROJECT/typing_extensions.py
