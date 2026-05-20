@@ -1,0 +1,212 @@
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from modules.database import fetch_data
+
+# ==============================
+# PAGE CONFIG
+# ==============================
+
+st.set_page_config(
+    page_title="News Sentiment Dashboard",
+    page_icon="📰",
+    layout="wide"
+)
+
+# ==============================
+# CUSTOM CSS
+# ==============================
+
+st.markdown("""
+<style>
+
+.main {
+    background-color: #0E1117;
+    color: white;
+}
+
+h1, h2, h3 {
+    color: white;
+}
+
+[data-testid="metric-container"] {
+    background-color: #1E1E1E;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+table {
+    color: white;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ==============================
+# SIDEBAR
+# ==============================
+
+st.sidebar.title("📰 Dashboard Menu")
+
+menu = st.sidebar.radio(
+    "Navigation",
+    ["View News", "Analytics"]
+)
+
+st.sidebar.markdown("---")
+
+st.sidebar.info(
+    """
+Sentiment score indicates whether
+the news article sentiment is positive,
+negative, or neutral.
+
+Positive score = Positive news  
+Negative score = Negative news
+"""
+)
+
+# ==============================
+# LOAD DATA FROM POSTGRESQL
+# ==============================
+
+try:
+
+    df = fetch_data()
+
+    if df.empty:
+        st.error("No data found in PostgreSQL database!")
+        st.stop()
+
+except Exception as e:
+
+    st.error("Database connection failed!")
+    st.error(e)
+    st.stop()
+
+# ==============================
+# PAGE TITLE
+# ==============================
+
+st.title("📰 News Analytics Sentiment Score Dashboard")
+
+st.markdown("---")
+
+# ==============================
+# METRICS
+# ==============================
+
+positive_count = len(df[df["sentiment"] == "Positive"])
+negative_count = len(df[df["sentiment"] == "Negative"])
+neutral_count = len(df[df["sentiment"] == "Neutral"])
+
+total_articles = len(df)
+
+col1, col2, col3, col4 = st.columns(4)
+
+col1.metric("📄 Total Articles", total_articles)
+col2.metric("🟢 Positive", positive_count)
+col3.metric("🔴 Negative", negative_count)
+col4.metric("⚪ Neutral", neutral_count)
+
+st.markdown("---")
+
+# ==============================
+# VIEW NEWS SECTION
+# ==============================
+
+if menu == "View News":
+
+    st.subheader("Latest News Articles")
+
+    # SENTIMENT COLOR FUNCTION
+
+    def highlight_sentiment(val):
+
+        if val == "Positive":
+            return "background-color: green; color: white;"
+
+        elif val == "Negative":
+            return "background-color: red; color: white;"
+
+        else:
+            return "background-color: gray; color: white;"
+
+    # APPLY STYLING
+
+    styled_df = df.style.map(
+        highlight_sentiment,
+        subset=["sentiment"]
+    )
+
+    # SHOW TABLE
+
+    st.dataframe(
+        styled_df,
+        use_container_width=True,
+        height=500
+    )
+
+# ==============================
+# ANALYTICS SECTION
+# ==============================
+
+elif menu == "Analytics":
+
+    st.subheader("Sentiment Distribution")
+
+    sentiment_counts = df["sentiment"].value_counts()
+
+    # BAR CHART
+
+    st.bar_chart(sentiment_counts)
+
+    st.markdown("---")
+
+    # PIE CHART
+
+    pie_chart = px.pie(
+        values=sentiment_counts.values,
+        names=sentiment_counts.index,
+        title="Sentiment Breakdown"
+    )
+
+    st.plotly_chart(
+        pie_chart,
+        use_container_width=True
+    )
+
+    st.markdown("---")
+
+    # HISTOGRAM
+
+    st.subheader("Sentiment Score Distribution")
+
+    hist_chart = px.histogram(
+        df,
+        x="sentiment_score",
+        nbins=20,
+        title="Sentiment Score Histogram"
+    )
+
+    st.plotly_chart(
+        hist_chart,
+        use_container_width=True
+    )
+
+# ==============================
+# RAW DATA
+# ==============================
+
+with st.expander("📂 View Raw Data"):
+
+    st.write(df)
+
+# ==============================
+# REFRESH BUTTON
+# ==============================
+
+if st.button("🔄 Refresh Dashboard"):
+
+    st.rerun()
